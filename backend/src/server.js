@@ -5,6 +5,7 @@ import connectWithDB from "./configs/dbConfig.js";
 //Configuring dotenv so that we can access environment variables
 dotenv.config();
 
+//Connection with MongoDB
 connectWithDB();
 
 //Creating an express application/instance
