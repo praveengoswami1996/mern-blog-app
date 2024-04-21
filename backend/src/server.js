@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectWithDB from "./configs/dbConfig.js";
+import userRoutes from "./routes/user.routes.js";
 
 //Configuring dotenv so that we can access environment variables
 dotenv.config();
@@ -12,12 +13,12 @@ connectWithDB();
 const app = express();
 
 //Port to run our server
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
 
 //Handling API Routes
-app.get("/", (request, response) => {
-    response.send("Hello, API is running");
-})
+app.use("/api/users", userRoutes);
+
 
 //Start the server
 app.listen(PORT, () => {
