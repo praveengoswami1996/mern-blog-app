@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { useState } from "react";
 import { MdErrorOutline } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AiFillGoogleCircle } from "react-icons/ai";
 
 const SignUp = () => {
   const { handleSubmit, control, formState: { errors } } = useForm({ mode: "all" });
@@ -36,10 +37,15 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen mt-20">
-      <div className="flex p-3 max-w-3xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-10 p-3 max-w-4xl mx-auto">
         {/* Left Side Starts */}
         <div className="flex-1">
-          <span>Devv Blog</span>
+          <img 
+            src={"/sign-up.svg"}
+            alt="Sign up Image"
+            width={500}
+            height={600}
+          />
         </div>
         {/* Left Side Ends */}
         
@@ -131,6 +137,16 @@ const SignUp = () => {
             <button disabled={isLoading} type="submit" className="w-full inline-flex items-center justify-center px-5 py-2.5 bg-indigo-500 text-white font-semibold rounded-lg">
               { isLoading ? "Signing up...": "Sign Up" }
             </button>
+
+            <button disabled={isLoading} type="button" className="w-full inline-flex items-center justify-center gap-1 px-5 py-2.5 text-indigo-500 border-2 border-indigo-500 font-semibold rounded-lg">
+              <span className="text-2xl"><AiFillGoogleCircle /></span>
+              Continue with Google
+            </button>
+
+            <div>
+              <span>Already have an account?</span>
+              <Link to="/sign-in">Sign In</Link>
+            </div>
           </form>
           {errorMessage && (
             <div className="mt-10 w-full border border-red-600 rounded-xl bg-red-100 py-3 text-center text-red-600 font-medium flex items-center justify-center gap-2">
