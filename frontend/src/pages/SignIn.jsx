@@ -4,33 +4,32 @@ import { Link, useNavigate } from "react-router-dom"
 import PasswordInput from "../components/PasswordInput"
 import { Controller, useForm } from "react-hook-form"
 import InputBox from "../components/InputBox"
-import { useState } from "react"
+import { signInStart, signInSuccess, signInFailure } from "../features/user/userSlice"
+import { useDispatch, useSelector } from "react-redux";  
 
 const SignIn = () => {
   const { handleSubmit, control, formState: { errors } } = useForm({ mode: "all" })
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
 
   const onSubmit = async (formData) => {
     try {
-      setIsLoading(true);
-      setErrorMessage(null); 
+      dispatch(signInStart()); 
       const response = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
       const data = await response.json();
-      setIsLoading(false);
       if(data.success === false) {
-        return setErrorMessage(data.message);
+        return dispatch(signInFailure(data.message));
+      } else {
+        dispatch(signInSuccess(data))
       }
       navigate("/");
     } catch (error) {
-      console.log("Error Aaya hai Bhaiya");
-      setIsLoading(false);
-      setErrorMessage(error.message);
+      dispatch(signInFailure(error.message));
     }
   }
 
@@ -105,14 +104,14 @@ const SignIn = () => {
             />
 
             <button 
-              // disabled={isLoading} 
+              disabled={loading} 
               type="submit" 
               className="w-full inline-flex items-center justify-center px-5 py-2.5 bg-indigo-500 text-white font-semibold rounded-lg"
             >
-              { isLoading ? "Please wait...": "Sign In" }
+              { loading ? "Please wait...": "Sign In" }
             </button>
 
-            <button disabled={isLoading} type="button" className="w-full inline-flex items-center justify-center gap-1 px-5 py-2.5 text-indigo-500 border-2 border-indigo-500 font-semibold rounded-lg">
+            <button disabled={loading} type="button" className="w-full inline-flex items-center justify-center gap-1 px-5 py-2.5 text-indigo-500 border-2 border-indigo-500 font-semibold rounded-lg">
               <span className="text-2xl"><AiFillGoogleCircle /></span>
               Continue with Google
             </button>
