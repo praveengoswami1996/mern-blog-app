@@ -17,7 +17,8 @@ const SignUp = () => {
   const onSubmit = async (formData) => {
     try {
       setIsLoading(true);
-      setErrorMessage(null); //Setting error here to null to clear previous error stored in the state
+      //Setting error here to null to clear previous error stored in the state
+      setErrorMessage(null); 
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -143,9 +144,11 @@ const SignUp = () => {
               Continue with Google
             </button>
 
-            <div>
+            <div className="flex items-center gap-1 text-sm">
               <span>Already have an account?</span>
-              <Link to="/sign-in">Sign In</Link>
+              <Link to="/sign-in" className="text-blue-500">
+                Sign in
+              </Link>
             </div>
           </form>
           {errorMessage && (
